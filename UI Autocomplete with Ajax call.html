@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Jquery UI | Autocomplete with Ajax</title>
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('#autocomplete').autocomplete({
+	        source: function( request, response ) {
+	            $.ajax({
+	                url: 'search.php',
+	                dataType: 'json',
+	                data: {
+	                    searchTxt: $('#autocomplete').val()
+	                },
+	                success: function( data ) {
+	                    response( data );
+	                }
+	            });
+	        },
+	        minLength: 3,
+	        /*select: function( event, ui ) {
+	            // $('#autocomplete').val(ui.item.value);
+	        }*/
+	    });
+	});
+	</script>
+</head>
+<body>
+
+</body>
+</html>
+
+<?php
+if( isset( $_REQUEST['searchTxt'] ) )
+{
+	$searchTxt 	= $_REQUEST['searchTxt'];
+	
+	$response 	= array();
+
+	// SQL query here
+
+	$response[] = array("value"=>$row['id'],"label"=>$row['name']);
+
+	echo json_encode( $response );
+}
+?>
